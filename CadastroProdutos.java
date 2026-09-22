@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 class Produto {
     String nome;
@@ -26,28 +27,57 @@ class Produto {
     }
 
     void exibirDados() {
-        System.out.println(nome + " - R$ " + preco + " - Qtd: " + quantidade);
+        System.out.println("Nome: " + nome);
+        System.out.println("Preço: R$ " + preco);
+        System.out.println("Quantidade: " + quantidade);
+        System.out.println("Valor em estoque: R$ " + calcularValorEstoque());
+        System.out.println();
     }
 }
 
 public class CadastroProdutos {
     public static void main(String[] args) {
 
+        Scanner teclado = new Scanner(System.in);
         ArrayList<Produto> produtos = new ArrayList<>();
 
-        produtos.add(new Produto("Mouse", 100, 10));
-        produtos.add(new Produto("Teclado", 150, 5));
-        produtos.add(new Produto("Monitor", 900, 3));
-        produtos.add(new Produto("Fone", 200, 8));
-        produtos.add(new Produto("Webcam", 250, 4));
+        for (int i = 0; i < 5; i++) {
 
-        produtos.get(0).adicionarEstoque(5);
-        produtos.get(1).removerEstoque(2);
+            System.out.println("Produto " + (i + 1));
+
+            System.out.print("Nome: ");
+            String nome = teclado.nextLine();
+
+            System.out.print("Preço: ");
+            double preco = teclado.nextDouble();
+
+            System.out.print("Quantidade: ");
+            int quantidade = teclado.nextInt();
+
+            teclado.nextLine();
+
+            produtos.add(new Produto(nome, preco, quantidade));
+
+            System.out.println();
+        }
+
+        System.out.print("Quantidade para adicionar no primeiro produto: ");
+        int adicionar = teclado.nextInt();
+
+        produtos.get(0).adicionarEstoque(adicionar);
+
+        System.out.print("Quantidade para remover do segundo produto: ");
+        int remover = teclado.nextInt();
+
+        produtos.get(1).removerEstoque(remover);
 
         double total = 0;
         Produto maior = produtos.get(0);
 
+        System.out.println("\nPRODUTOS:");
+
         for (Produto p : produtos) {
+
             p.exibirDados();
 
             total += p.calcularValorEstoque();
@@ -57,7 +87,9 @@ public class CadastroProdutos {
             }
         }
 
-        System.out.println("Valor total: R$ " + total);
-        System.out.println("Maior valor em estoque: " + maior.nome);
+        System.out.println("Valor total do estoque: R$ " + total);
+        System.out.println("Produto com maior valor em estoque: " + maior.nome);
+
+        teclado.close();
     }
 }

@@ -15,12 +15,16 @@ class Conta {
     void depositar(double valor) {
         if (valor > 0) {
             saldo += valor;
+        } else {
+            System.out.println("Valor inválido.");
         }
     }
 
     void sacar(double valor) {
         if (valor > 0 && valor <= saldo) {
             saldo -= valor;
+        } else {
+            System.out.println("Saque inválido.");
         }
     }
 
@@ -29,7 +33,11 @@ class Conta {
     }
 
     void exibirDados() {
-        System.out.println(numero + " - " + titular + " - R$ " + saldo);
+        System.out.println(
+            "Conta: " + numero +
+            " - Titular: " + titular +
+            " - Saldo: R$ " + saldo
+        );
     }
 }
 
@@ -37,40 +45,41 @@ public class ControleContas {
     public static void main(String[] args) {
 
         Scanner teclado = new Scanner(System.in);
-
         ArrayList<Conta> contas = new ArrayList<>();
 
-        contas.add(new Conta(1, "Lucas", 1000));
-        contas.add(new Conta(2, "Maria", 2000));
-        contas.add(new Conta(3, "João", 500));
-        contas.add(new Conta(4, "Ana", 3000));
-        contas.add(new Conta(5, "Pedro", 1500));
+        for (int i = 0; i < 5; i++) {
 
-        contas.get(0).depositar(500);
-        contas.get(1).sacar(200);
+            System.out.println("Conta " + (i + 1));
 
-        Conta maior = contas.get(0);
+            System.out.print("Número da conta: ");
+            int numero = teclado.nextInt();
 
-        for (Conta c : contas) {
-            c.exibirDados();
+            teclado.nextLine();
 
-            if (c.saldo > maior.saldo) {
-                maior = c;
-            }
+            System.out.print("Titular: ");
+            String titular = teclado.nextLine();
+
+            System.out.print("Saldo inicial: ");
+            double saldo = teclado.nextDouble();
+
+            teclado.nextLine();
+
+            contas.add(new Conta(numero, titular, saldo));
+
+            System.out.println();
         }
 
-        System.out.println("Maior saldo: " + maior.titular);
-
         System.out.print("Digite o número da conta: ");
-        int numero = teclado.nextInt();
+        int numeroBusca = teclado.nextInt();
 
         for (Conta c : contas) {
 
-            if (c.numero == numero) {
+            if (c.numero == numeroBusca) {
 
                 System.out.println("1 - Depositar");
                 System.out.println("2 - Sacar");
 
+                System.out.print("Escolha: ");
                 int opcao = teclado.nextInt();
 
                 System.out.print("Valor: ");
@@ -78,15 +87,29 @@ public class ControleContas {
 
                 if (opcao == 1) {
                     c.depositar(valor);
-                }
-
-                if (opcao == 2) {
+                } else if (opcao == 2) {
                     c.sacar(valor);
                 }
-
-                c.exibirDados();
             }
         }
+
+        Conta maior = contas.get(0);
+
+        System.out.println("\nCONTAS:");
+
+        for (Conta c : contas) {
+
+            c.exibirDados();
+
+            if (c.saldo > maior.saldo) {
+                maior = c;
+            }
+        }
+
+        System.out.println(
+            "\nConta com maior saldo: " +
+            maior.numero + " - " + maior.titular
+        );
 
         teclado.close();
     }

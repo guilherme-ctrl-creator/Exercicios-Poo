@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 class Aluno {
     String nome;
@@ -22,11 +23,10 @@ class Aluno {
     }
 
     String situacao() {
-        double media = calcularMedia();
 
-        if (media >= 7) {
+        if (calcularMedia() >= 7) {
             return "Aprovado";
-        } else if (media >= 5) {
+        } else if (calcularMedia() >= 5) {
             return "Recuperação";
         } else {
             return "Reprovado";
@@ -34,26 +34,49 @@ class Aluno {
     }
 
     void exibirSituacao() {
-        System.out.println(nome + " - Média: " + calcularMedia()
-                + " - " + situacao());
+        System.out.println(
+            nome + " - Média: " + calcularMedia() +
+            " - " + situacao()
+        );
     }
 }
 
 public class CadastroAlunos {
     public static void main(String[] args) {
 
+        Scanner teclado = new Scanner(System.in);
         ArrayList<Aluno> alunos = new ArrayList<>();
 
-        alunos.add(new Aluno("Lucas", 18, 8, 7));
-        alunos.add(new Aluno("Maria", 19, 9, 8));
-        alunos.add(new Aluno("João", 20, 6, 5));
-        alunos.add(new Aluno("Ana", 18, 4, 3));
-        alunos.add(new Aluno("Pedro", 21, 7, 9));
+        for (int i = 0; i < 5; i++) {
+
+            System.out.println("Aluno " + (i + 1));
+
+            System.out.print("Nome: ");
+            String nome = teclado.nextLine();
+
+            System.out.print("Idade: ");
+            int idade = teclado.nextInt();
+
+            System.out.print("Nota 1: ");
+            double nota1 = teclado.nextDouble();
+
+            System.out.print("Nota 2: ");
+            double nota2 = teclado.nextDouble();
+
+            teclado.nextLine();
+
+            alunos.add(new Aluno(nome, idade, nota1, nota2));
+
+            System.out.println();
+        }
 
         int aprovados = 0;
         double maiorMedia = 0;
 
+        System.out.println("\nALUNOS:");
+
         for (Aluno a : alunos) {
+
             a.exibirSituacao();
 
             if (a.estaAprovado()) {
@@ -65,7 +88,9 @@ public class CadastroAlunos {
             }
         }
 
-        System.out.println("Aprovados: " + aprovados);
+        System.out.println("\nQuantidade de aprovados: " + aprovados);
         System.out.println("Maior média: " + maiorMedia);
+
+        teclado.close();
     }
 }
